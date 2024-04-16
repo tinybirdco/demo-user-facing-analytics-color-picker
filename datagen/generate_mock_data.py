@@ -10,7 +10,7 @@ producer = KafkaProducer(
     bootstrap_servers=os.environ['REDPANDA_BOOTSTRAP_SERVER'],
     security_protocol="SASL_SSL",
     sasl_mechanism='SCRAM-SHA-256',
-    sasl_plain_username='demo-tinybird',
+    sasl_plain_username=os.environ['REDPANDA_USER'],
     sasl_plain_password=os.environ['REDPANDA_PASSWORD']
 )
 
