@@ -1,0 +1,46 @@
+TOKEN "read_all_pipes" READ
+
+TOKEN "top_colors_endpoint_read_6139" READ
+
+NODE hex_rgb
+SQL >
+
+    %
+    SELECT 
+      color,
+      reinterpretAsUInt8(reverse(unhex(substring(color, 2, 2)))) AS r,
+      reinterpretAsUInt8(reverse(unhex(substring(color, 4, 2)))) AS g,
+      reinterpretAsUInt8(reverse(unhex(substring(color, 6, 2)))) AS b
+    FROM events
+    WHERE 1
+    {% if defined(username) %}
+      AND user = {{String(username)}}
+    {% end %}
+
+
+
+NODE calculate_distances
+SQL >
+
+    SELECT 
+      h.color AS color,
+      c.name AS name,
+      L2Distance([h.r, h.g, h.b], [c.r, c.g, c.b]) AS distance
+    FROM hex_rgb h
+    CROSS JOIN colors c
+    ORDER BY color DESC, distance ASC
+    LIMIT 1 BY color
+
+
+
+NODE endpoint
+SQL >
+
+    SELECT
+      name,
+      count() AS c
+    FROM calculate_distances
+    GROUP BY name
+    ORDER BY c DESC
+
+

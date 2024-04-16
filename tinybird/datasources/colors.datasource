@@ -1,0 +1,9 @@
+
+SCHEMA >
+    `name` String,
+    `r` UInt8,
+    `g` UInt8,
+    `b` UInt8
+
+ENGINE "MergeTree"
+ENGINE_SORTING_KEY "name, r, g, b"

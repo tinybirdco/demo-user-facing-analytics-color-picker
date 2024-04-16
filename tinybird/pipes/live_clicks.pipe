@@ -1,0 +1,38 @@
+TOKEN "live_clicks_endpoint_read_2645" READ
+
+TOKEN "read_all_pipes" READ
+
+NODE time_series
+SQL >
+
+    WITH toStartOfInterval(now('UTC') - INTERVAL 5 minute, INTERVAL 5 second) AS start
+    SELECT addSeconds(start, number) AS ts
+    FROM (
+        SELECT arrayJoin(range(0, 300, 5)) AS number
+    )
+
+
+
+NODE counts
+SQL >
+
+    %
+    SELECT toStartOfInterval(parseDateTimeBestEffort(timestamp), INTERVAL 5 second) AS ts, 
+    count() AS c
+    FROM events
+    WHERE 1 {% if defined(username) %} AND user = {{ String(username) }} {% end %}
+    GROUP BY ts
+
+
+
+NODE endpoint
+SQL >
+
+    SELECT
+      a.ts,
+      b.c
+    FROM time_series a
+    LEFT JOIN counts b ON b.ts = a.ts
+    ORDER BY ts DESC
+
+

@@ -1,0 +1,8 @@
+# Data Source created from Pipe 'leaderboard'
+
+SCHEMA >
+    `user` String,
+    `clicks` AggregateFunction(count)
+
+ENGINE "AggregatingMergeTree"
+ENGINE_SORTING_KEY "user"

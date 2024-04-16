@@ -1,0 +1,14 @@
+NODE calculate_leaderboard
+SQL >
+
+    SELECT
+        user,
+        countState() AS clicks
+    FROM events
+    GROUP BY user
+    ORDER BY clicks DESC
+
+TYPE materialized
+DATASOURCE leaderboard_mv
+
+
