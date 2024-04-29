@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from 'react';
-import ColorPicker from '@/components/colorPicker';
+import ColorGame from '@/components/colorGame';
 import Analytics from '@/components/analytics';
 
 
@@ -15,8 +15,7 @@ export default function App() {
 
   return (
     <div className='content-container'>
-      <ColorPicker onUsernameChange={handleUsernameChange}/>
-      <Analytics username={username}/>
+      <ColorGame onUsernameChange={handleUsernameChange}/>
     </div>
   );
 }

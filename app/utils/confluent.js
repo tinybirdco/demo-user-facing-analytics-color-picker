@@ -2,25 +2,25 @@
 
 import { Kafka } from "kafkajs";
 
-const redpanda = new Kafka({
+const confluent = new Kafka({
     brokers: ['YOUR BOOTSTRAP SERVER ADDRESS'],
     ssl: {
         },
     sasl: {
         mechanism: "scram-sha-256",
-        username: "YOUR REDPANDA USERNAME",
-        password: "YOUR REDPANDA PASSWORD"
+        username: "YOUR CONFLUENT KEY",
+        password: "YOUR CONFLUENT SECRET"
     }
 });
 
-const producer = redpanda.producer();
+const producer = confluent.producer();
 
 export async function connect() {
   try {
     await producer.connect()
-    console.log('Connected to Redpanda')
+    console.log('Connected to Confluent')
   } catch (error) {
-    console.error("Could not connect to Redpanda:", error);
+    console.error("Could not connect to Confluent:", error);
   }
 }
 
@@ -28,7 +28,7 @@ export async function sendMessage(message) {
 
   try {
     await producer.send({
-      topic: "color-picker",
+      topic: "game-events",
       messages: [{
         value: JSON.stringify(message)
       }]
@@ -41,7 +41,7 @@ export async function sendMessage(message) {
 export async function disconnect() {
   try {
     await producer.disconnect();
-    console.log("Disconnected from Redpanda");
+    console.log("Disconnected from Confluent");
   } catch (error) {
     console.error("Error:", error);
   }
