@@ -4,6 +4,25 @@ import React, { useState } from 'react';
 import UsernameModal from './usernameModal';
 import GameOverModal from './gameOverModal';
 
+async function sendToConfluent(payload) {
+  console.log('Sending data to Confluent: ', payload);
+
+  try {
+    const response = await fetch('http://localhost:3001/api/sendToConfluent', {
+      method: "POST",
+      body: JSON.stringify(payload),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+
+    const responseData = await response.json();
+    console.log('Data sent to Kafka: ', responseData);
+  } catch (error) {
+    console.error('Error sending data to Kafka: ', error.message);
+  }
+}
+
 export default function GridGame() {
   
   // Set various states
@@ -25,7 +44,15 @@ export default function GridGame() {
       // set new start time to latest click time
       setStartTime(clickTime);
 
-      console.log(`username: ${username} picked: ${index} ${correct} duration: ${duration}`)
+      // Send the data to the Confluent proxy
+      let payload = {
+        'timestamp': new Date().toISOString(),
+        'username': username,
+        'event-type': 'click',
+        'index': index,
+        'correct': correct
+      }
+      sendToConfluent(payload);
       
       // Pick a random button to become the next target
       setTargetIndex(Math.floor(Math.random() * 25));
