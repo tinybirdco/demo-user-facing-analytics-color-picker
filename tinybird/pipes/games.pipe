@@ -25,10 +25,7 @@ SQL >
         sumState(duration) AS game_length,
         avgState(duration) AS avg_click_delay,
         minState(duration) AS fastest_click,
-        maxState(duration) AS slowest_click,
-        groupArrayState(click_index) AS indexes,
-        groupArrayState(duration) AS durations,
-        groupArrayMovingSumState(duration) AS cumulative_durations
+        maxState(duration) AS slowest_click
     FROM ordered_events
     GROUP BY
         game_id,

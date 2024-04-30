@@ -8,10 +8,7 @@ SCHEMA >
     `game_length` AggregateFunction(sum, UInt64),
     `avg_click_delay` AggregateFunction(avg, UInt64),
     `fastest_click` AggregateFunction(min, UInt64),
-    `slowest_click` AggregateFunction(max, UInt64),
-    `indexes` AggregateFunction(groupArray, UInt32),
-    `durations` AggregateFunction(groupArray, UInt64),
-    `cumulative_durations` AggregateFunction(groupArrayMovingSum, UInt64)
+    `slowest_click` AggregateFunction(max, UInt64)
 
 ENGINE "AggregatingMergeTree"
 ENGINE_SORTING_KEY "username, game_id"

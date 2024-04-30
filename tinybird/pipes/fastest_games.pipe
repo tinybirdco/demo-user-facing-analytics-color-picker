@@ -1,13 +1,14 @@
-NODE fastest_games_1
+TOKEN "fastest_games_endpoint_read_7101" READ
+
+NODE endpoint
 SQL >
 
     SELECT
-        username,
-        anyState(game_id) AS game_id,
-        sumMergeState(game_length) AS game_length
+      username,
+      game_id,
+      sumMerge(game_length) AS game_length
     FROM games_mv
-    GROUP BY username
-    ORDER BY game_length ASC
-    LIMIT 1 BY username
+    GROUP BY username, game_id
+    ORDER BY game_length ASC LIMIT 1 by username
 
 
