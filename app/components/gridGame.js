@@ -23,9 +23,18 @@ async function sendToConfluent(payload) {
   }
 }
 
+function generateUUID() {
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+        var r = Math.random() * 16 | 0,
+            v = c === 'x' ? r : (r & 0x3 | 0x8);
+        return v.toString(16);
+    });
+} 
+
 export default function GridGame() {
   
   // Set various states
+  const [gameId, setGameId] = useState(''); // Set game id
   const [startTime, setStartTime] = useState(null); // Click start time
   const [targetIndex, setTargetIndex] = useState(null); // Target index of green circle
   const [username, setUsername] = useState(''); // Username
@@ -45,14 +54,13 @@ export default function GridGame() {
       let payload = {
         'timestamp': new Date().toISOString(),
         'username': username,
-        'message': {
-          'event_type': 'click',
-          'start_time': startTime.toISOString(),
-          'click_time': clickTime.toISOString(),
-          'duration': duration,
-          'index': index,
-          'correct': correct
-        }
+        'game_id': gameId,
+        'event_type': 'click',
+        'start_time': startTime.toISOString(),
+        'click_time': clickTime.toISOString(),
+        'duration': duration,
+        'index': index,
+        'correct': correct
       }
       sendToConfluent(payload);
 
@@ -66,17 +74,7 @@ export default function GridGame() {
       setClickCount(prevCount => prevCount + 1);
 
       // Check for game over
-      if (clickCount >= 24) {
-        // Send game end event to Confluent
-        let payload = {
-          'timestamp': new Date().toISOString(),
-          'username': username,
-          'message': {
-            'event_type': 'game_end'
-          }
-        }
-        sendToConfluent(payload);
-        
+      if (clickCount >= 24) {        
         // Show modal
         setGameOver(true);
         setShowGameOverModal(true);
@@ -95,17 +93,9 @@ export default function GridGame() {
     // Create an initial target button
     const initialTarget = Math.floor(Math.random() * 25);
     setTargetIndex(initialTarget);
-
-    // Send game start event to Confluent
-    let payload = {
-      'timestamp': new Date().toISOString(),
-      'username': username,
-      'message': {
-        'event_type': 'game_start'
-      }
-    }
-    sendToConfluent(payload);
     
+    // Create a random game ID
+    setGameId(generateUUID());
   };
 
   // When the game ends, handle starting a new game
@@ -124,15 +114,8 @@ export default function GridGame() {
     const initialTarget = Math.floor(Math.random() * 25);
     setTargetIndex(initialTarget);
 
-    // Send game start event to Confluent
-    let payload = {
-      'timestamp': new Date().toISOString(),
-      'username': username,
-      'message': {
-        'event_type': 'game_start'
-      }
-    }
-    sendToConfluent(payload);
+    // Create a random game ID
+    setGameId(generateUUID());
   };
 
   // Render 25 buttons in the grid
