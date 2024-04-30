@@ -15,6 +15,21 @@ const confluent = new Kafka({
 });
 
 const producer = confluent.producer();
+let isConnected = false;
+
+const connectToConfluent = async () => {
+    await producer.connect();
+    isConnected = true;
+    console.log('Connected to Confluent broker');
+}
+
+const disconnectFromConfluent = async () => {
+    if (isConnected) {
+        await producer.disconnect();
+        console.log('Disconnected from Confluent broker');
+    }
+}
+
 const app = express();
 
 app.use(express.json());
@@ -29,7 +44,9 @@ app.post('/api/sendToConfluent', async (req, res) => {
     const topic = 'game_events';
 
     try {
-        await producer.connect();
+        if (!isConnected) {
+            await connectToConfluent();
+        }
         await producer.send({
             topic,
             messages: [
@@ -41,11 +58,17 @@ app.post('/api/sendToConfluent', async (req, res) => {
     } catch (error) {
         console.error('Error sending message to Confluent:', error);
         res.json({ error: error.message });
-    } finally {
-        await producer.disconnect();
     }
 });
 
-app.listen(3001, () => {
+const server = app.listen(3001, () => {
     console.log('Confluent microservice running on port 3001');
+});
+
+process.on('SIGINT', async () => {
+    await disconnectFromConfluent();
+    server.close(() => {
+        console.log('Server closed');
+        process.exit(0);
+    });
 });
