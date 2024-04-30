@@ -1,0 +1,23 @@
+
+SCHEMA >
+    `message_event_type` String `json:$.message.event_type`,
+    `timestamp` DateTime64(3) `json:$.timestamp`,
+    `username` String `json:$.username`,
+    `message_click_time` Nullable(DateTime64(3)) `json:$.message.click_time`,
+    `message_correct` Nullable(UInt8) `json:$.message.correct`,
+    `message_duration` Nullable(UInt64) `json:$.message.duration`,
+    `message_index` Nullable(UInt16) `json:$.message.index`,
+    `message_start_time` Nullable(DateTime64(3)) `json:$.message.start_time`
+
+ENGINE "MergeTree"
+ENGINE_PARTITION_KEY "toYYYYMM(__timestamp)"
+ENGINE_SORTING_KEY "__timestamp"
+
+KAFKA_CONNECTION_NAME 'confluent'
+KAFKA_TOPIC 'game_events'
+KAFKA_GROUP_ID 'game_events_1714500732794'
+KAFKA_AUTO_OFFSET_RESET 'latest'
+KAFKA_STORE_RAW_VALUE 'False'
+KAFKA_STORE_HEADERS 'False'
+KAFKA_TARGET_PARTITIONS 'auto'
+KAFKA_KEY_AVRO_DESERIALIZATION ''
