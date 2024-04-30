@@ -46,9 +46,9 @@ export default function GridGame() {
         'timestamp': new Date().toISOString(),
         'username': username,
         'message': {
-          'event-type': 'click',
-          'start-time': startTime.toISOString(),
-          'click-time': clickTime.toISOString(),
+          'event_type': 'click',
+          'start_time': startTime.toISOString(),
+          'click_time': clickTime.toISOString(),
           'duration': duration,
           'index': index,
           'correct': correct
@@ -72,7 +72,7 @@ export default function GridGame() {
           'timestamp': new Date().toISOString(),
           'username': username,
           'message': {
-            'event-type': 'game-end'
+            'event_type': 'game_end'
           }
         }
         sendToConfluent(payload);
@@ -101,7 +101,7 @@ export default function GridGame() {
       'timestamp': new Date().toISOString(),
       'username': username,
       'message': {
-        'event-type': 'game-start'
+        'event_type': 'game_start'
       }
     }
     sendToConfluent(payload);
@@ -129,7 +129,7 @@ export default function GridGame() {
       'timestamp': new Date().toISOString(),
       'username': username,
       'message': {
-        'event-type': 'game-start'
+        'event_type': 'game_start'
       }
     }
     sendToConfluent(payload);
