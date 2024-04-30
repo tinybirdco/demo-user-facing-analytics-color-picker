@@ -72,7 +72,7 @@ export default function GridGame() {
           'timestamp': new Date().toISOString(),
           'username': username,
           'message': {
-            'event-type': 'game-emd'
+            'event-type': 'game-end'
           }
         }
         sendToConfluent(payload);
