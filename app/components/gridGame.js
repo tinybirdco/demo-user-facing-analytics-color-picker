@@ -41,18 +41,23 @@ export default function GridGame() {
       const clickTime = new Date();
       const duration = (clickTime - startTime);
 
-      // set new start time to latest click time
-      setStartTime(clickTime);
-
       // Send the data to the Confluent proxy
       let payload = {
         'timestamp': new Date().toISOString(),
         'username': username,
-        'event-type': 'click',
-        'index': index,
-        'correct': correct
+        'message': {
+          'event-type': 'click',
+          'start-time': startTime.toISOString(),
+          'click-time': clickTime.toISOString(),
+          'duration': duration,
+          'index': index,
+          'correct': correct
+        }
       }
       sendToConfluent(payload);
+
+      // set new start time to latest click time
+      setStartTime(clickTime);
       
       // Pick a random button to become the next target
       setTargetIndex(Math.floor(Math.random() * 25));
@@ -62,6 +67,17 @@ export default function GridGame() {
 
       // Check for game over
       if (clickCount >= 24) {
+        // Send game end event to Confluent
+        let payload = {
+          'timestamp': new Date().toISOString(),
+          'username': username,
+          'message': {
+            'event-type': 'game-emd'
+          }
+        }
+        sendToConfluent(payload);
+        
+        // Show modal
         setGameOver(true);
         setShowGameOverModal(true);
       }
@@ -79,6 +95,17 @@ export default function GridGame() {
     // Create an initial target button
     const initialTarget = Math.floor(Math.random() * 25);
     setTargetIndex(initialTarget);
+
+    // Send game start event to Confluent
+    let payload = {
+      'timestamp': new Date().toISOString(),
+      'username': username,
+      'message': {
+        'event-type': 'game-start'
+      }
+    }
+    sendToConfluent(payload);
+    
   };
 
   // When the game ends, handle starting a new game
@@ -96,6 +123,16 @@ export default function GridGame() {
     // Set a new target button
     const initialTarget = Math.floor(Math.random() * 25);
     setTargetIndex(initialTarget);
+
+    // Send game start event to Confluent
+    let payload = {
+      'timestamp': new Date().toISOString(),
+      'username': username,
+      'message': {
+        'event-type': 'game-start'
+      }
+    }
+    sendToConfluent(payload);
   };
 
   // Render 25 buttons in the grid
