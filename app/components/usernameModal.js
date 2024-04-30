@@ -1,31 +1,39 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useRef } from 'react';
 import Modal from 'react-modal';
 
-const UsernameModal = ({ isOpen, onRequestClose, startGame }) => {
+const UsernameModal = ({ isOpen, onRequestClose, onStartGame }) => {
+    // Set states for username and error message
     const [username, setUsername] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
+
+    // Create a ref for the text input for focus
     const inputRef = useRef(null);
 
     const handleSubmit = () => {
+        // Check for non-null username
         if (username.trim() === '') {
             setErrorMessage('Please enter a username.');
         } else {
-            startGame(username);
+            // Start the game and close the modal
+            onStartGame(username);
             onRequestClose();
         }
     };
 
+    // Set username on input
     const handleInput = (e) => {
         setUsername(e.target.value);
         setErrorMessage('');
     }
 
+    // Start game on Enter
     const handleKeyDown = (e) => {
         if (e.key === 'Enter') {
             handleSubmit();
         }
     }
 
+    // Focus on input after modal opens
     const handleAfterOpen = () => {
         if (inputRef.current) {
         inputRef.current.focus();

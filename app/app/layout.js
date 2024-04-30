@@ -4,8 +4,8 @@ import "./globals.css";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
-  title: "Color Picker!",
-  description: "Built with Tinybird, Redpanda, and React",
+  title: "Gridgame!",
+  description: "Built with Tinybird and Confluent",
 };
 
 export default function RootLayout({ children }) {

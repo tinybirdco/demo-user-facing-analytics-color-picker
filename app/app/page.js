@@ -1,21 +1,14 @@
 "use client";
 
-import React, { useState } from 'react';
-import ColorGame from '@/components/colorGame';
-import Analytics from '@/components/analytics';
+import React from 'react';
+import GridGame from '@/components/gridGame';
 
 
 export default function App() {
-
-  const [username, setUsername] = useState('');
-
-  const handleUsernameChange = (newUsername) => {
-    setUsername(newUsername);
-  }
-
   return (
+    // Render the GridGame app
     <div className='content-container'>
-      <ColorGame onUsernameChange={handleUsernameChange}/>
+      <GridGame/>
     </div>
   );
 }
