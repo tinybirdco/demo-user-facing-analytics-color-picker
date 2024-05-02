@@ -4,25 +4,6 @@ import React, { useState, useEffect } from 'react';
 import UsernameModal from './usernameModal';
 import GameOverModal from './gameOverModal';
 
-async function sendToConfluent(payload) {
-  console.log('Sending data to Confluent: ', payload);
-
-  try {
-    const response = await fetch('http://localhost:3001/api/sendToConfluent', {
-      method: "POST",
-      body: JSON.stringify(payload),
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
-
-    const responseData = await response.json();
-    console.log('Data sent to Kafka: ', responseData);
-  } catch (error) {
-    console.error('Error sending data to Kafka: ', error.message);
-  }
-}
-
 // Generate a random UUID
 function generateUUID() {
     return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
@@ -31,6 +12,28 @@ function generateUUID() {
         return v.toString(16);
     });
 } 
+
+// Send data to the Confluent proxy
+async function sendToConfluent(payload) {
+  console.log('Sending data to Confluent: ', payload);
+
+  try {
+    // Use the Express API POST route
+    const response = await fetch('http://localhost:3001/api/sendToConfluent', {
+      method: "POST",
+      body: JSON.stringify(payload),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+
+    // parse and log
+    const responseData = await response.json();
+    console.log('Data sent to Kafka: ', responseData);
+  } catch (error) {
+    console.error('Error sending data to Kafka: ', error.message);
+  }
+}
 
 export default function GridGame() {
   
