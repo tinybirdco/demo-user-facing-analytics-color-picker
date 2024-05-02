@@ -1,7 +1,7 @@
 const express = require('express');
 const { Kafka } = require('kafkajs');
 const cors = require('cors');
-require('dotenv').config({ path: '../.env.local'})
+require('dotenv').config({ path: '../.env.local'});
 
 // Define the Confluent connection
 const confluent = new Kafka({
