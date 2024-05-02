@@ -7,7 +7,6 @@ import FastestClick from './fastestClick';
 import FavoriteTarget from './favoriteTarget';
 import NemesisTarget from './nemesisTarget';
 import { Grid } from '@tremor/react';
-import Leaderboard from './leaderboard';
 require('dotenv').config({ path: '../.env.local'})
 
 const TINYBIRD_HOST = 'api.us-east.aws.tinybird.co';
@@ -52,12 +51,6 @@ export default function Analytics({username, gameStarted, currentGameProgress}) 
                 username={username}
                 gameStarted={gameStarted}
                 currentGameProgress={currentGameProgress}
-            />
-            <Leaderboard
-                host={host}
-                token={token}
-                username={username}
-                gameStarted={gameStarted}
             />
         </div>
     )

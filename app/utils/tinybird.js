@@ -18,10 +18,6 @@ const nemesisTargetUrl = (host, token, username) => {
     return `https://${host}/v0/pipes/nemesis_target.json?username=${username}&token=${token}`
 }
 
-const leaderboardUrl = (host, token) => {
-    return `https://${host}/v0/pipes/leaderboard.json?&token=${token}`
-}
-
 const fetchTinybirdApi = async (url, setData) => {
     try {
         const response = await fetch(url);
@@ -39,6 +35,5 @@ export {
     fastestGameUrl,
     fastestClickUrl,
     favoriteTargetUrl,
-    nemesisTargetUrl,
-    leaderboardUrl
+    nemesisTargetUrl
 }
