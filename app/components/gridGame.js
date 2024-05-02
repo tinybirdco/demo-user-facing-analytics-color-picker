@@ -23,6 +23,7 @@ async function sendToConfluent(payload) {
   }
 }
 
+// Generate a random UUID
 function generateUUID() {
     return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
         var r = Math.random() * 16 | 0,
@@ -31,7 +32,7 @@ function generateUUID() {
     });
 } 
 
-export default function GridGame({ onStartGame,  onUsernameChange, updateGameProgress }) {
+export default function GridGame() {
   
   // Set various states
   const [gameId, setGameId] = useState(''); // Set game id
