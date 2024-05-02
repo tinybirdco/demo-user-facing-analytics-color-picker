@@ -4,81 +4,19 @@ import React, { useState, useEffect } from 'react';
 import UsernameModal from './usernameModal';
 import GameOverModal from './gameOverModal';
 
-async function sendToConfluent(payload) {
-  console.log('Sending data to Confluent: ', payload);
-
-  try {
-    const response = await fetch('http://localhost:3001/api/sendToConfluent', {
-      method: "POST",
-      body: JSON.stringify(payload),
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
-
-    const responseData = await response.json();
-    console.log('Data sent to Kafka: ', responseData);
-  } catch (error) {
-    console.error('Error sending data to Kafka: ', error.message);
-  }
-}
-
-function generateUUID() {
-    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-        var r = Math.random() * 16 | 0,
-            v = c === 'x' ? r : (r & 0x3 | 0x8);
-        return v.toString(16);
-    });
-} 
-
-export default function GridGame({ onStartGame,  onUsernameChange, updateGameProgress }) {
+export default function GridGame() {
   
   // Set various states
-  const [gameId, setGameId] = useState(''); // Set game id
-  const [gameStartTime, setGameStartTime] = useState(null); // Game start time
-  const [clickStartTime, setClickStartTime] = useState(null); // Click start time
   const [targetIndex, setTargetIndex] = useState(null); // Target index of green circle
   const [username, setUsername] = useState(''); // Username
   const [isModalOpen, setIsModalOpen] = useState(true); // Username modal status
   const [clickCount, setClickCount] = useState(0); // Game clicks remaining
   const [gameOver, setGameOver] = useState(false); // Is the game over?
   const [showGameOverModal, setShowGameOverModal] = useState(false); // Show game over modal when game over
-  
-  // State for the current game's cumulative duration
-  const [currentGameProgress, setCurrentGameProgress] = useState([])
-
-  useEffect(() => {
-    updateGameProgress(currentGameProgress);
-  },[currentGameProgress]);
 
   // Handle the click of one of the game buttons.
   const handleClick = (index, correct) => {
     if (!gameOver) {
-      // Calculate time of click and compare it to start time to get duration between clicks
-      const clickTime = new Date();
-      const duration = (clickTime - clickStartTime);
-      const total_duration = clickTime - gameStartTime;
-
-      // Set current progress
-      setCurrentGameProgress([...currentGameProgress, {'click': currentGameProgress.length + 1, 'cumulative_duration': total_duration}]);
-
-      // Send the data to the Confluent proxy
-      let payload = {
-        'timestamp': new Date().toISOString(),
-        'username': username,
-        'game_id': gameId,
-        'event_type': 'click',
-        'start_time': clickStartTime.toISOString(),
-        'click_time': clickTime.toISOString(),
-        'duration': duration,
-        'index': index,
-        'correct': correct
-      }
-      sendToConfluent(payload);
-
-      // set new start time to latest click time
-      setClickStartTime(clickTime);
-      
       // Pick a random button to become the next target
       setTargetIndex(Math.floor(Math.random() * 25)+1);
 
@@ -90,7 +28,6 @@ export default function GridGame({ onStartGame,  onUsernameChange, updateGamePro
         // Show modal
         setGameOver(true);
         setShowGameOverModal(true);
-        onStartGame(false);
       }
     }
   };
@@ -99,53 +36,28 @@ export default function GridGame({ onStartGame,  onUsernameChange, updateGamePro
   const handleStartGame = (username) => {
     // Set the username
     setUsername(username);
-    onUsernameChange(username);
-
-    // Set the start time for first click and reset game duration
-    let startTime = new Date();
-    setClickStartTime(startTime);
-    setGameStartTime(startTime);
 
     // Create an initial target button
     const initialTarget = Math.floor(Math.random() * 25) + 1;
     setTargetIndex(initialTarget);
-    
-    // Create a random game ID
-    setGameId(generateUUID());
-
-    // Pass game started state to the analytics component
-    onStartGame(true);
   };
 
   // When the game ends, handle starting a new game
   const handlePlayAgain = () => {
-    // Reset the click count to zero and current game progress
+    // Reset the click count to zero
     setClickCount(0);
-    setCurrentGameProgress([]);
     
     // Reset game and remove game over modal
     setGameOver(false);
     setShowGameOverModal(false);
 
-    // Set the start time for first click and reset game duration
-    let startTime = new Date();
-    setClickStartTime(startTime);
-    setGameStartTime(startTime);
-
     // Set a new target button
     const initialTarget = Math.floor(Math.random() * 25)+1;
     setTargetIndex(initialTarget);
-
-    // Create a random game ID
-    setGameId(generateUUID());
-
-    // Pass game started state to the analytics component
-    onStartGame(true);
   };
 
   const handleStartOver = () => {
     setGameOver(true);
-    onStartGame(false);
     handlePlayAgain();
   }
 
