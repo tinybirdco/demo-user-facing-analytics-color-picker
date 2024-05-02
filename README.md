@@ -1,8 +1,6 @@
-# Build user-facing analytics dashboards into your app with Redpanda, Tinybird, and React.
+# Build user-facing analytics dashboards into your React app with Tinybird and Confluent
 
-Learn how to build a React app that emits data to a Redpanda (Kafka) topic, uses Tinybird to analyze and publish analytics APIs, and integrate those APIs into Tremor dashboard components in your app.
-
-:tv: Want to watch how this gets built? View the recording of the [live coding session](https://www.youtube.com/watch?v=epz5LFQ3IoE).
+Learn how to build a React app that emits data to a Confluent topic, uses Tinybird to query data and publish APIs, and integrate those APIs into a React app for user-facing analytics.
 
 ### Prerequisites
 
@@ -20,8 +18,8 @@ First, create a [free Tinybird account](https://www.tinybird.co/signup). Then cr
 ### 1. Clone the repository
 
 ```sh
-git clone https://github.com/tinybirdco/demo-user-generated-content-analytics.git
-cd demo-user-facing-analytics-color-picker
+git clone https://github.com/tinybirdco/demo-user-facing-analytics-confluent.git
+cd demo-user-facing-analytics-confluent
 ```
 
 ### 2. Install app dependencies
@@ -31,28 +29,26 @@ cd app
 npm install
 ```
 
-### 3. Create a Redpanda Serverless Cluster and Topic
+### 3. Create a Confluent Cloud Cluster and Topic
 
 Note: You can use any Kafka technology, including Apache Kafka, Confluent Cloud, Redpanda, etc. with minimal changes.
 
-If you haven't done so, [sign up](https://cloud.redpanda.com/sign-up) for a Redpanda Serverless account. Then create a cluster. Once you've created a cluster, create a topic called `color-picker`. Once you've created a topic, create a user and add a Topic ACL to allow the user to produce to the topic.
-
-Additionally, create a Consumer Group ACL to allow the user access to this consumer group: `color-picker_1712847775107`
+If you haven't done so, [sign up](https://confluent.cloud/signup) for a Confluent Cloud account. Then create a cluster. Once you've created a cluster, create a topic called `game-events`. Once you've created a topic, create a key/secret pair to allow you to produce events to your new topic.
 
 Then, export the following environment variables to your machine:
 
 ```sh
-EXPORT REDPANDA_BOOTSTRAP_SERVER=<your bootstrap server address>
-EXPORT REDPANDA_USER=<your redpanda username>
-EXPORT REDPANDA_PASSWORD=<your redpanda password>
+EXPORT CONFLUENT_BOOTSTRAP_SERVER=<your bootstrap server address>
+EXPORT CONFLUENT_KEY=<your Confluent key>
+EXPORT CONFLUENT_SECRET=<your Confluent secret>
 ```
 
 ### 4. Install the Tinybird CLI
 
 ```sh
 cd tinybird
-python -mvenv .e
-. .e/bin/activate
+python -m venv .venv
+source .e/bin/activate
 pip install tinybird-cli
 ```
 
@@ -75,7 +71,7 @@ Run the following command to connect your Tinybird Workspace to your Redpanda cl
 
 ```sh
 cd tinybird
-tb connection create kafka --bootstrap-servers $REDPANDA_BOOTSTRAP_SERVER --key $REDPANDA_USER --secret $REDPANDA_PASSWORD --connection-name redpanda --sasl_mechanism SCRAM-SHA-256
+tb connection create kafka --bootstrap-servers $CONFLUENT_BOOTSTRAP_SERVER --key $CONFLUENT_KEY --secret $CONFLUENT_SECRET --connection-name confluent
 ```
 
 Note: You can also do this from the Tinybird UI.

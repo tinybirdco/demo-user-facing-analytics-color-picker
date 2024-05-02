@@ -1,0 +1,14 @@
+# Data Source created from Pipe 'games'
+
+SCHEMA >
+    `game_id` String,
+    `username` String,
+    `game_start` AggregateFunction(min, DateTime64(3)),
+    `game_end` AggregateFunction(max, DateTime64(3)),
+    `game_length` AggregateFunction(sum, UInt64),
+    `avg_click_delay` AggregateFunction(avg, UInt64),
+    `fastest_click` AggregateFunction(min, UInt64),
+    `slowest_click` AggregateFunction(max, UInt64)
+
+ENGINE "AggregatingMergeTree"
+ENGINE_SORTING_KEY "username, game_id"

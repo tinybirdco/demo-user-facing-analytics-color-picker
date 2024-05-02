@@ -9,15 +9,20 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@confluentinc/kafka-javascript": "^0.1.12-devel",
     "@headlessui/react": "^1.7.18",
     "@headlessui/tailwindcss": "^0.2.0",
-    "@tremor/react": "^3.15.0",
+    "@tremor/react": "^3.16.2",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
     "kafkajs": "^2.2.4",
     "moment": "^2.30.1",
     "net": "^1.0.2",
     "next": "14.1.4",
     "react": "^18",
     "react-dom": "^18",
+    "react-modal": "^3.16.1",
     "tls": "^0.0.1"
   },
   "devDependencies": {

@@ -1,41 +1,36 @@
-"use client";
+'use client';
 
-import { Card, Title, BarList } from '@tremor/react';
 import React, { useState, useEffect } from 'react';
-import {fetchAPI, leaderboardURL } from '../utils/tinybird';
+import { leaderboardUrl, fetchTinybirdApi } from '@/utils/tinybird';
+import { Card, Title, BarList } from '@tremor/react';
 
-const Leaderboard = ({host, token, page_size, page}) => {
+const Leaderboard = ({host, token, username, gameStarted}) => {
+
     const [data, setData] = useState([{
-        "user": "",
-        "clicks": 0
+        'name': '',
+        'value': 0
     }])
 
-    let url = leaderboardURL(host, token, page_size, page);
+    let url = leaderboardUrl(host, token)
 
     useEffect(() => {
-        fetchAPI(url, setData)
-    }, [url]);
-
-    useEffect(() => {
-        // create a interval and get the id
-        const myInterval = setInterval(() => {
-            fetchAPI(url, setData)
-        }, 5000);
-        return () => clearInterval(myInterval);
-    }, [data]);
+        if (gameStarted) {
+            fetchTinybirdApi(url, setData);
+        }
+    }, [gameStarted]);
 
     const rows = data.map((d) => ({
-        name: d.user,
-        value: d.clicks
-    }));
+        name: d.name,
+        value: d.value,
+        color: d.name === username ? 'green' : 'zinc'
+    }))
 
     return (
-        <Card className="mt-6 h-84">
-            <Title>
-                Leaderboard
-            </Title>
-            <BarList
+        <Card className="mt-6" decoration="top" decorationColor='zinc'>
+            <Title>Leaderboard</Title>
+            <BarList className="h-48"
                 data={rows}
+                sortOrder='ascending'
             />
         </Card>
     );

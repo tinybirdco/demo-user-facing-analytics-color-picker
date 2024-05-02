@@ -1,22 +1,28 @@
 "use client";
 
 import React, { useState } from 'react';
-import ColorPicker from '@/components/colorPicker';
+import GridGame from '@/components/gridGame';
 import Analytics from '@/components/analytics';
 
 
 export default function App() {
-
+  const [gameStarted, setGameStarted] = useState(false);
+  const [currentGameProgress, setCurrentGameProgress] = useState([]);
   const [username, setUsername] = useState('');
 
-  const handleUsernameChange = (newUsername) => {
-    setUsername(newUsername);
-  }
-
   return (
+    // Render the GridGame app
     <div className='content-container'>
-      <ColorPicker onUsernameChange={handleUsernameChange}/>
-      <Analytics username={username}/>
+      <GridGame 
+        onStartGame={setGameStarted} 
+        onUsernameChange={setUsername}
+        updateGameProgress={setCurrentGameProgress}
+      />
+      <Analytics 
+        username={username} 
+        gameStarted={gameStarted}
+        currentGameProgress={currentGameProgress}
+      />
     </div>
   );
 }

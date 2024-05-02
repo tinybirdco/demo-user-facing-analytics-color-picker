@@ -1,60 +1,65 @@
-"use client";
+'use client';
 
+import React from 'react';
+import GameTracker from './gameTracker';
+import FastestGame from './fastestGame';
+import FastestClick from './fastestClick';
+import FavoriteTarget from './favoriteTarget';
+import NemesisTarget from './nemesisTarget';
 import { Grid } from '@tremor/react';
-import React, { useState } from 'react';
-import LiveClicks from './liveClicks';
-import TopColors from './topColors';
 import Leaderboard from './leaderboard';
+require('dotenv').config({ path: '../.env.local'})
 
-const TINYBIRD_HOST='YOUR TINYBIRD HOST'
-const TINYBIRD_TOKEN='YOUR TINYBIRD PIPE READ TOKEN'
+const TINYBIRD_HOST = 'api.us-east.aws.tinybird.co';
+const TINYBIRD_TOKEN = 'p.eyJ1IjogIjBiMjJiMDkxLTdjNzktNDRlMS1hZTg1LTQwYjhhNmNiNTE1NyIsICJpZCI6ICJhNzdjYmIwNS1hNGYzLTRhNTEtYWEwNy1iNTI2NzViZGJkYmMiLCAiaG9zdCI6ICJ1cy1lYXN0LWF3cyJ9.3IFDsL5yBA8-Dg5srBixhfpXTmHr3q_li0aNQayKg5I';
 
-export default function Analytics({ username }) {
-
-    const [page, setPage] = useState(0);
-
-    const handleLeftClick = () => {
-        if (page != 0) {
-            setPage(page - 1);
-        }
-    }
-
-    const handleRightClick = () => {
-        setPage(page + 1);
-    }
-
-    let host = TINYBIRD_HOST
-    let token = TINYBIRD_TOKEN
+export default function Analytics({username, gameStarted, currentGameProgress}) { 
+    let host = TINYBIRD_HOST;
+    let token = TINYBIRD_TOKEN;
 
     return (
         <div className='analytics-container'>
-            <h2>Analytics</h2>
-            <Grid>
-                <LiveClicks
-                host={host}
-                token={token}
-                username={username}
+            <h2>Analytics for {username}</h2>
+            <Grid className='grid-cols-4 gap-6'>
+                <FastestGame
+                    host={host}
+                    token={token}
+                    username={username}
+                    gameStarted={gameStarted}
                 />
-                <TopColors
-                host={host}
-                token={token}
-                username={username}
+                <FastestClick
+                    host={host}
+                    token={token}
+                    username={username}
+                    gameStarted={gameStarted}
                 />
-                <Leaderboard
-                host={host}
-                token={token}
-                page_size={10}
-                page={page}
+                <FavoriteTarget
+                    host={host}
+                    token={token}
+                    username={username}
+                    gameStarted={gameStarted}
                 />
-                <div className="nav-button-container">
-                    <button className="nav-button" onClick={handleLeftClick}>
-                        {"<"}
-                    </button>
-                    <button className="nav-button" onClick={handleRightClick}>
-                        {">"}
-                    </button>
-                </div>
+                <NemesisTarget
+                    host={host}
+                    token={token}
+                    username={username}
+                    gameStarted={gameStarted}
+                />
             </Grid>
+            <GameTracker
+                host={host}
+                token={token}
+                username={username}
+                gameStarted={gameStarted}
+                currentGameProgress={currentGameProgress}
+            />
+            <Leaderboard
+                host={host}
+                token={token}
+                username={username}
+                gameStarted={gameStarted}
+            />
         </div>
-    );
+    )
 }
+

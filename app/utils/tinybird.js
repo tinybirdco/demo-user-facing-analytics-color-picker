@@ -1,28 +1,44 @@
-const liveClicksURL = (host, token) => {
-    return `https://${host}/v0/pipes/live_clicks.json?token=${token}`;
+const gameTrackerUrl = (host, token, username) => {
+    return `https://${host}/v0/pipes/game_tracker.json?username=${username}&token=${token}`
 }
 
-const topColorsURL = (host, token, username) => {
-    const pass_username = username ? `&username=${username}` : '';
-    return `https://${host}/v0/pipes/top_colors.json?token=${token}${pass_username}`;
+const fastestGameUrl = (host, token, username) => {
+    return `https://${host}/v0/pipes/fastest_game.json?username=${username}&token=${token}`
 }
 
-const leaderboardURL = (host, token, page_size, page) => {
-    return `https://${host}/v0/pipes/get_leaderboard.json?token=${token}&page_size=${page_size}&page=${page}`;
+const fastestClickUrl = (host, token, username) => {
+    return `https://${host}/v0/pipes/fastest_click.json?username=${username}&token=${token}`
 }
 
+const favoriteTargetUrl = (host, token, username) => {
+    return `https://${host}/v0/pipes/favorite_target.json?username=${username}&token=${token}`
+}
 
+const nemesisTargetUrl = (host, token, username) => {
+    return `https://${host}/v0/pipes/nemesis_target.json?username=${username}&token=${token}`
+}
 
+const leaderboardUrl = (host, token) => {
+    return `https://${host}/v0/pipes/leaderboard.json?&token=${token}`
+}
 
-const fetchAPI = async (url, setData) => {
-    const data = await fetch(url);
-    const jsonData = await data.json();
-    setData(jsonData.data);
+const fetchTinybirdApi = async (url, setData) => {
+    try {
+        const response = await fetch(url);
+        const jsonData = await response.json();
+        setData(jsonData.data);
+    } catch (error) {
+        console.error('Error fetching data: ', error)
+    }
+    
 }
 
 export {
-    fetchAPI,
-    liveClicksURL,
-    topColorsURL,
-    leaderboardURL
+    fetchTinybirdApi,
+    gameTrackerUrl,
+    fastestGameUrl,
+    fastestClickUrl,
+    favoriteTargetUrl,
+    nemesisTargetUrl,
+    leaderboardUrl
 }
