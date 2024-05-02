@@ -38,9 +38,14 @@ const app = express();
 
 // Use JSON and CORS
 app.use(express.json());
-app.use(cors());
+app.use(cors());    
 
-// Create an API route to send data to Confluent
+// Show the service is running
+app.get('/', (req, res) => {
+    res.send('The Confluent microservice is running!')
+});
+
+// Add an API route to send data to Confluent
 app.post('/api/sendToConfluent', async (req, res) => {
     const payload = req.body;
     const topic = 'game_events';
@@ -63,12 +68,12 @@ app.post('/api/sendToConfluent', async (req, res) => {
     }
 });
 
-// Establish the proxy server on localhost:3001
+// Start the proxy server on localhost:3001
 const server = app.listen(3001, () => {
     console.log('Confluent microservice running on port 3001');
 });
 
-// Disconnect from the Confluent broker when you shut down the proxy server
+// Handle disconnecting from Confluent when the server is shut down
 process.on('SIGINT', async () => {
     await disconnectFromConfluent();
     server.close(() => {
