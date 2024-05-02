@@ -14,6 +14,8 @@ const confluent = new Kafka({
         password: process.env.CONFLUENT_API_SECRET,
     },
 });
+
+// Track if the proxy is connected to the broker
 let isConnected = false; 
 
 // Create a Kafka producer
@@ -36,7 +38,7 @@ const disconnectFromConfluent = async () => {
 // Create an Express app for proxy
 const app = express();
 
-// Use JSON and CORS
+// Use JSON and CORS middleware
 app.use(express.json());
 app.use(cors());    
 
