@@ -3,6 +3,7 @@ const { Kafka } = require('kafkajs');
 const cors = require('cors');
 require('dotenv').config({ path: '../.env.local'})
 
+// Define the Confluent connection
 const confluent = new Kafka({
     clientId: process.env.CONFLUENT_CLIENT_ID,
     brokers: [process.env.CONFLUENT_BROKER_URL],
@@ -13,10 +14,12 @@ const confluent = new Kafka({
         password: process.env.CONFLUENT_API_SECRET,
     },
 });
+let isConnected = false; 
 
+// Create a Kafka producer
 const producer = confluent.producer();
-let isConnected = false;
 
+// helper functions to connect and disconnect
 const connectToConfluent = async () => {
     await producer.connect();
     isConnected = true;
@@ -30,15 +33,14 @@ const disconnectFromConfluent = async () => {
     }
 }
 
+// Create an Express app for proxy
 const app = express();
 
+// Use JSON and CORS
 app.use(express.json());
-app.use(cors());    
+app.use(cors());
 
-app.get('/', (req, res) => {
-    res.send('The Confluent microservice is running!')
-});
-
+// Create an API route to send data to Confluent
 app.post('/api/sendToConfluent', async (req, res) => {
     const payload = req.body;
     const topic = 'game_events';
@@ -61,10 +63,12 @@ app.post('/api/sendToConfluent', async (req, res) => {
     }
 });
 
+// Establish the proxy server on localhost:3001
 const server = app.listen(3001, () => {
     console.log('Confluent microservice running on port 3001');
 });
 
+// Disconnect from the Confluent broker when you shut down the proxy server
 process.on('SIGINT', async () => {
     await disconnectFromConfluent();
     server.close(() => {
