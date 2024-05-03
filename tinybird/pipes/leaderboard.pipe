@@ -1,7 +1,5 @@
 TOKEN "read_endpoints" READ
 
-TOKEN "leaderboard_endpoint_read_2451" READ
-
 NODE get_games
 SQL >
 
