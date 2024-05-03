@@ -2,6 +2,8 @@
 
 Learn how to build a React app that emits data to a Confluent topic, uses Tinybird to query data and publish APIs, and integrate those APIs into a React app for user-facing analytics.
 
+![Gif of the final game](/img/game-gif.gif)
+
 ### Prerequisites
 
 - Python 3.8 (only if you use the data generator)
@@ -35,12 +37,13 @@ Note: You can use any Kafka technology, including Apache Kafka, Confluent Cloud,
 
 If you haven't done so, [sign up](https://confluent.cloud/signup) for a Confluent Cloud account. Then create a cluster. Once you've created a cluster, create a topic called `game-events`. Once you've created a topic, create a key/secret pair to allow you to produce events to your new topic.
 
-Then, export the following environment variables to your machine:
+In addition, add the following to your `.env.local`:
 
 ```sh
-EXPORT CONFLUENT_BOOTSTRAP_SERVER=<your bootstrap server address>
-EXPORT CONFLUENT_KEY=<your Confluent key>
-EXPORT CONFLUENT_SECRET=<your Confluent secret>
+CONFLUENT_CLIENT_ID='<your cluster id>`
+CONFLUENT_BROKER_URL='<your boostrap server url>'
+CONFLUENT_API_KEY='<your confluent key>'
+CONFLUENT_API_SECRET='<your confluent secret>'
 ```
 
 ### 4. Install the Tinybird CLI
@@ -60,21 +63,21 @@ From the `/tinybird` directory, run the following command:
 
 ```sh
 export TB_TOKEN=<your user admin token>
-TB auth
+tb auth
 ```
 
 > :warning: Your token and workspace details will be stored in a .tinyb file. If you intend to push this to a public repository, add the `.tinyb` to your `.gitignore`.
 
-### 6. Connect Redpanda to Tinybird
+### 6. Connect Confluent to Tinybird
 
 Run the following command to connect your Tinybird Workspace to your Redpanda cluster.
 
 ```sh
 cd tinybird
-tb connection create kafka --bootstrap-servers $CONFLUENT_BOOTSTRAP_SERVER --key $CONFLUENT_KEY --secret $CONFLUENT_SECRET --connection-name confluent
+tb connection create kafka --bootstrap-servers <your confluent boostrap server> --key <your confluent key> --secret <your confluent secret> --connection-name confluent
 ```
 
-Note: You can also do this from the Tinybird UI.
+> Note: You can also do this from the Tinybird UI.
 
 ### 7. Push the resources to Tinybird
 
@@ -85,34 +88,36 @@ cd tinybird
 tb push --force
 ```
 
-### 8. Start streaming data to Redpanda
+### 9. Add your Tinybird host and token to .env
 
-Use the data generator to start streaming data to a topic. The script accepts a single argument for the approximate number of events per second you want to send:
+Open your `env.local` and add the following:
 
-```sh
-cd datagen
-python generate_mock_data.py 50
+```
+TINYBIRD_HOST=<your tinybird host>>
+TINYBIRD_TOKEN=<the read_endpoints token from your Workspace>
 ```
 
-### 9. Add your Tinybird token
+Note you can copy the `read_endpoints` token from the Tinybird CLI with `tb token copy read_endpoints`.
 
-Open [analytics.js](/app/components/analytics.js).
+### Run the proxy server.
 
-Copy the `read_all_pipes` token from your Tinybird Workspace and paste it into line 10
+This app uses a proxy to handle requests to Confluent and to store Tinybird tokens. Run the proxy server from the `/services` directory:
 
-Copy your Tinybird Host (e.g. `api.tinybird.co`) and paste into line 9.
+```
+node confluent-proxy.js
+```
 
-Note: this is only for local development. Use proper token management if you intend to host this application or make your repository public.
+If you visit `http://localhost:3001` you'll see a message that the microservice is running.
 
 ### 10. Run the app!
+
+Run the application!
 
 ```sh
 npm run dev
 ```
 
-### 11. Open the dashboard!
-
-You should now have a functioning app with user-facing analytics dashboard at localhost:3000. Click some colors and watch your dashboards update!
+Open it at `http://localhost:3000` and play the game. Have fun!
 
 ## Contributing
 
