@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import GameTracker from './gameTracker';
 import FastestGame from './fastestGame';
 import FastestClick from './fastestClick';
@@ -8,7 +8,7 @@ import FavoriteTarget from './favoriteTarget';
 import NemesisTarget from './nemesisTarget';
 import { Grid } from '@tremor/react';
 
-export default function Analytics({username, gameStarted}) { 
+export default function Analytics({username, gameStarted, currentGameProgress}) { 
    
     // Set Tinybird auth states
     const [tinybirdHost, setTinybirdHost] = useState('');
