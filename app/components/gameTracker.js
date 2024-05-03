@@ -36,6 +36,13 @@ const GameTracker = ({host, token, username, gameStarted, currentGameProgress}) 
     // Any time the current game progress updates, check if you are ahead or behind
     // and change the line color to green/red depending on the outcome
     useEffect(() => {
+        // Reset if game has just started
+        if (currentGameProgress.length == 0) {
+            setTitle('Beat your record!');
+            setLineColor('zinc');
+        }
+        
+        // If game is in progress, update color and title
         if (currentGameProgress.length > 0 && bestGame.length > 0) {
             
             // Define cumulative duration of current game
