@@ -1,7 +1,3 @@
-const gameTrackerUrl = (host, token, username) => {
-    return `https://${host}/v0/pipes/game_tracker.json?username=${username}&token=${token}`
-}
-
 const fastestGameUrl = (host, token, username) => {
     return `https://${host}/v0/pipes/fastest_game.json?username=${username}&token=${token}`
 }
@@ -16,6 +12,10 @@ const favoriteTargetUrl = (host, token, username) => {
 
 const nemesisTargetUrl = (host, token, username) => {
     return `https://${host}/v0/pipes/nemesis_target.json?username=${username}&token=${token}`
+}
+
+const gameTrackerUrl = (host, token, username) => {
+    return `https://${host}/v0/pipes/game_tracker.json?username=${username}&token=${token}`
 }
 
 const leaderboardUrl = (host, token) => {
@@ -35,10 +35,10 @@ const fetchTinybirdApi = async (url, setData) => {
 
 export {
     fetchTinybirdApi,
-    gameTrackerUrl,
     fastestGameUrl,
     fastestClickUrl,
     favoriteTargetUrl,
     nemesisTargetUrl,
+    gameTrackerUrl,
     leaderboardUrl
 }

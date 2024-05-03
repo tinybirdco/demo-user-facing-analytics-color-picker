@@ -1,7 +1,5 @@
 TOKEN "read_endpoints" READ
 
-TOKEN "leaderboard_endpoint_read_2451" READ
-
 NODE get_games
 SQL >
 
@@ -24,7 +22,7 @@ SQL >
       game_duration AS value
     FROM get_games
     WHERE clicks = 25
-    ORDER BY game_duration
+    ORDER BY game_duration ASC
     LIMIT 1 BY username
     LIMIT 10
 
