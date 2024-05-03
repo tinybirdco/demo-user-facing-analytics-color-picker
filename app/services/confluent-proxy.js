@@ -45,6 +45,16 @@ app.get('/', (req, res) => {
     res.send('The Confluent microservice is running!')
 });
 
+// Get Tinybird environment variables
+app.get('/api/tinybird', (req, res) => {
+    const envVariables = {
+        TINYBIRD_HOST: process.env.TINYBIRD_HOST,
+        TINYBIRD_TOKEN: process.env.TINYBIRD_TOKEN
+    }
+
+    res.json(envVariables);
+});
+
 // Add an API route to send data to Confluent
 app.post('/api/sendToConfluent', async (req, res) => {
     const payload = req.body;
