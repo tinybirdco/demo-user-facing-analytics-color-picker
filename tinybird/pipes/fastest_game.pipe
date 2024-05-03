@@ -4,8 +4,6 @@ DESCRIPTION >
 
 TOKEN "read_endpoints" READ
 
-TOKEN "fastest_game_endpoint_read_9987" READ
-
 NODE filter_games
 SQL >
 

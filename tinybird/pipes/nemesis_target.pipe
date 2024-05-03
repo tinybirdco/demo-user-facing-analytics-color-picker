@@ -1,7 +1,5 @@
 TOKEN "read_endpoints" READ
 
-TOKEN "nemesis_target_endpoint_read_9645" READ
-
 NODE endpoint
 SQL >
 

@@ -1,7 +1,5 @@
 TOKEN "read_endpoints" READ
 
-TOKEN "favorite_target_endpoint_read_0366" READ
-
 NODE endpoint
 SQL >
 
