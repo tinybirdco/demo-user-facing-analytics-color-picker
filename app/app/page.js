@@ -7,7 +7,6 @@ import Analytics from '@/components/analytics';
 
 export default function App() {
   const [gameStarted, setGameStarted] = useState(false);
-  const [currentGameProgress, setCurrentGameProgress] = useState([]);
   const [username, setUsername] = useState('');
 
   return (
@@ -16,12 +15,10 @@ export default function App() {
       <GridGame 
         onStartGame={setGameStarted} 
         onUsernameChange={setUsername}
-        updateGameProgress={setCurrentGameProgress}
       />
       <Analytics 
         username={username} 
         gameStarted={gameStarted}
-        currentGameProgress={currentGameProgress}
       />
     </div>
   );
