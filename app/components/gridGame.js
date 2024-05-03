@@ -47,6 +47,7 @@ export default function GridGame({ onStartGame,  onUsernameChange, updateGamePro
   // State for the current game's cumulative duration
   const [currentGameProgress, setCurrentGameProgress] = useState([])
 
+  // Lift the currentGameProgress up any time it changes
   useEffect(() => {
     updateGameProgress(currentGameProgress);
   },[currentGameProgress]);
