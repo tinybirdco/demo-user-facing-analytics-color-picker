@@ -6,7 +6,6 @@ import FastestClick from './fastestClick';
 import FavoriteTarget from './favoriteTarget';
 import NemesisTarget from './nemesisTarget';
 import { Grid } from '@tremor/react';
-require('dotenv').config({ path: '../.env.local'})
 
 export default function Analytics({username, gameStarted, currentGameProgress}) { 
    
@@ -32,7 +31,7 @@ export default function Analytics({username, gameStarted, currentGameProgress}) 
             <Grid className='grid-cols-4 gap-6'>
                 <FastestGame
                     host={tinybirdHost}
-                    token={tinybirdHost}
+                    token={tinybirdToken}
                     username={username}
                     gameStarted={gameStarted}
                 />
@@ -44,13 +43,13 @@ export default function Analytics({username, gameStarted, currentGameProgress}) 
                 />
                 <FavoriteTarget
                     host={tinybirdHost}
-                    token={tinybirdHost}
+                    token={tinybirdToken}
                     username={username}
                     gameStarted={gameStarted}
                 />
                 <NemesisTarget
                     host={tinybirdHost}
-                    token={tinybirdHost}
+                    token={tinybirdToken}
                     username={username}
                     gameStarted={gameStarted}
                 />
