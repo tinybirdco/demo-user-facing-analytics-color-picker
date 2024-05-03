@@ -18,6 +18,10 @@ const gameTrackerUrl = (host, token, username) => {
     return `https://${host}/v0/pipes/game_tracker.json?username=${username}&token=${token}`
 }
 
+const leaderboardUrl = (host, token) => {
+    return `https://${host}/v0/pipes/leaderboard.json?&token=${token}`
+}
+
 const fetchTinybirdApi = async (url, setData) => {
     try {
         const response = await fetch(url);
@@ -35,5 +39,6 @@ export {
     fastestClickUrl,
     favoriteTargetUrl,
     nemesisTargetUrl,
-    gameTrackerUrl
+    gameTrackerUrl,
+    leaderboardUrl
 }
