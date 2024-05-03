@@ -6,17 +6,16 @@ import { Card, Title, AreaChart } from '@tremor/react';
 
 const GameTracker = ({host, token, username, gameStarted, currentGameProgress}) => {
 
+    // set state to store the cumulative duration array for the best game
     const [bestGame, setBestGame] = useState([{
         'click': 0,
         'cumulative_duration': 0
     }])
 
-    const [lineColor, setLineColor] = useState('red');
-
-    const [title, setTitle] = useState('Beat your record!');
-
+    // Define the Tinybird API url with props
     let url = gameTrackerUrl(host, token, username)
 
+    // Fetch the Tinybird API on game start
     useEffect(() => {
         if (gameStarted) {
             fetchTinybirdApi(url, setBestGame);
@@ -30,17 +29,28 @@ const GameTracker = ({host, token, username, gameStarted, currentGameProgress}) 
         current_game_duration: currentGameProgress[index] ? currentGameProgress[index].cumulative_duration : null,
     }));
 
+    // Set states for line color and card title
+    const [lineColor, setLineColor] = useState('red');
+    const [title, setTitle] = useState('Beat your record!');
+
+    // Any time the current game progress updates, check if you are ahead or behind
+    // and change the line color to green/red depending on the outcome
     useEffect(() => {
         if (currentGameProgress.length > 0 && bestGame.length > 0) {
-            let current_duration = currentGameProgress[currentGameProgress.length-1].cumulative_duration;
-            if (current_duration < bestGame[currentGameProgress.length-1].cumulative_duration) {
+            
+            // Define cumulative duration of current game
+            let currentGameIndex = currentGameProgress.length-1;
+            let currentDuration = currentGameProgress[currentGameIndex].cumulative_duration;
+            
+            if (currentDuration < bestGame[currentGameIndex].cumulative_duration) {
                 setLineColor('green');
             } else {
                 setLineColor('red');
             }
-            setTitle(`Current Time: ${current_duration}`)
+            // Update the title with the cumulative duration of your current game
+            setTitle(`Current Time: ${currentDuration}`)
         }
-    }, [currentGameProgress]);
+    }, [currentGameProgress]); // Update states on each click
 
     return (
         <Card className="mt-6" decoration="top" decorationColor={lineColor}>
