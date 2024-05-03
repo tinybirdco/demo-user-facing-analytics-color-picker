@@ -31,7 +31,7 @@ function generateUUID() {
     });
 } 
 
-export default function GridGame({ onStartGame,  onUsernameChange, updateGameProgress }) {
+export default function GridGame({ onStartGame,  onUsernameChange }) {
   
   // Set various states
   const [gameId, setGameId] = useState(''); // Set game id
@@ -43,13 +43,6 @@ export default function GridGame({ onStartGame,  onUsernameChange, updateGamePro
   const [clickCount, setClickCount] = useState(0); // Game clicks remaining
   const [gameOver, setGameOver] = useState(false); // Is the game over?
   const [showGameOverModal, setShowGameOverModal] = useState(false); // Show game over modal when game over
-  
-  // State for the current game's cumulative duration
-  const [currentGameProgress, setCurrentGameProgress] = useState([])
-
-  useEffect(() => {
-    updateGameProgress(currentGameProgress);
-  },[currentGameProgress]);
 
   // Handle the click of one of the game buttons.
   const handleClick = (index, correct) => {
@@ -57,10 +50,6 @@ export default function GridGame({ onStartGame,  onUsernameChange, updateGamePro
       // Calculate time of click and compare it to start time to get duration between clicks
       const clickTime = new Date();
       const duration = (clickTime - clickStartTime);
-      const total_duration = clickTime - gameStartTime;
-
-      // Set current progress
-      setCurrentGameProgress([...currentGameProgress, {'click': currentGameProgress.length + 1, 'cumulative_duration': total_duration}]);
 
       // Send the data to the Confluent proxy
       let payload = {
@@ -121,7 +110,6 @@ export default function GridGame({ onStartGame,  onUsernameChange, updateGamePro
   const handlePlayAgain = () => {
     // Reset the click count to zero and current game progress
     setClickCount(0);
-    setCurrentGameProgress([]);
     
     // Reset game and remove game over modal
     setGameOver(false);

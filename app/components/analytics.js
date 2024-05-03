@@ -7,7 +7,7 @@ import FavoriteTarget from './favoriteTarget';
 import NemesisTarget from './nemesisTarget';
 import { Grid } from '@tremor/react';
 
-export default function Analytics({username, gameStarted, currentGameProgress}) { 
+export default function Analytics({username, gameStarted}) { 
    
     // Set Tinybird auth states
     const [tinybirdHost, setTinybirdHost] = useState('');
