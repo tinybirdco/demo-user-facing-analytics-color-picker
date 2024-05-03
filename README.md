@@ -40,7 +40,7 @@ If you haven't done so, [sign up](https://confluent.cloud/signup) for a Confluen
 In addition, add the following to your `.env.local`:
 
 ```sh
-CONFLUENT_CLIENT_ID='<your cluster id>`
+CONFLUENT_CLIENT_ID='<your cluster id>'
 CONFLUENT_BROKER_URL='<your boostrap server url>'
 CONFLUENT_API_KEY='<your confluent key>'
 CONFLUENT_API_SECRET='<your confluent secret>'
