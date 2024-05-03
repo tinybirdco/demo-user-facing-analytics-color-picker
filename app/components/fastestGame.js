@@ -7,7 +7,6 @@ import { Card } from '@tremor/react';
 const FastestGame = ({host, token, username, gameStarted}) => {
 
     const [data, setData] = useState([])
-
     let url = fastestGameUrl(host, token, username)
 
     useEffect(() => {
