@@ -7,8 +7,8 @@ import Analytics from '@/components/analytics';
 
 export default function App() {
   const [gameStarted, setGameStarted] = useState(false);
-  const [currentGameProgress, setCurrentGameProgress] = useState([]);
   const [username, setUsername] = useState('');
+  const [currentGameProgress, setCurrentGameProgress] = useState([]);
 
   return (
     // Render the GridGame app
