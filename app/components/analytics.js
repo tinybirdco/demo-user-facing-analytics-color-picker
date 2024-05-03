@@ -6,6 +6,7 @@ import FastestGame from './fastestGame';
 import FastestClick from './fastestClick';
 import FavoriteTarget from './favoriteTarget';
 import NemesisTarget from './nemesisTarget';
+import Leaderboard from './leaderboard';
 import { Grid } from '@tremor/react';
 
 export default function Analytics({username, gameStarted, currentGameProgress}) { 
@@ -61,6 +62,12 @@ export default function Analytics({username, gameStarted, currentGameProgress}) 
                 username={username}
                 gameStarted={gameStarted}
                 currentGameProgress={currentGameProgress}
+            />
+            <Leaderboard
+                host={tinybirdHost}
+                token={tinybirdToken}
+                username={username}
+                gameStarted={gameStarted}
             />
         </div>
     )
