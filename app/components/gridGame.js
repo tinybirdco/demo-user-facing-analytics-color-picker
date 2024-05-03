@@ -57,10 +57,10 @@ export default function GridGame({ onStartGame,  onUsernameChange, updateGamePro
       // Calculate time of click and compare it to start time to get duration between clicks
       const clickTime = new Date();
       const duration = (clickTime - clickStartTime);
-      const total_duration = clickTime - gameStartTime;
+      const totalDuration = clickTime - gameStartTime;
 
       // Set current progress
-      setCurrentGameProgress([...currentGameProgress, {'click': currentGameProgress.length + 1, 'cumulative_duration': total_duration}]);
+      setCurrentGameProgress([...currentGameProgress, {'click': currentGameProgress.length + 1, 'cumulative_duration': totalDuration}]);
 
       // Send the data to the Confluent proxy
       let payload = {
