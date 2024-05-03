@@ -99,7 +99,7 @@ TINYBIRD_TOKEN=<the read_endpoints token from your Workspace>
 
 Note you can copy the `read_endpoints` token from the Tinybird CLI with `tb token copy read_endpoints`.
 
-### Run the proxy server.
+### 10. Run the proxy server
 
 This app uses a proxy to handle requests to Confluent and to store Tinybird tokens. Run the proxy server from the `/services` directory:
 
@@ -109,7 +109,7 @@ node confluent-proxy.js
 
 If you visit `http://localhost:3001` you'll see a message that the microservice is running.
 
-### 10. Run the app!
+### 11. Run the app!
 
 Run the application!
 
